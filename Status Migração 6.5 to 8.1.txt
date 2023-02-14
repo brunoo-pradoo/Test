@@ -1,0 +1,129 @@
+	Migração 6.5 >>> 7.3
+
+>> Upgrade Modelo & State: 11:47 às 13:07 (1:20 hs)
+>> Upgrade Data: 16:03 às 16:14 (11 min)
+
+	Migração 7.3 >>> 8.1
+
+>> Upgrade Modelo & State: 18:43 às 18:52 (9 min)
+>> Upgrade Data: 19:59 às 20:00 (1 min)
+
+
+-------------
+
+SELECT TOP (1000) * FROM [ProductionDataSet]
+where ReportingPointId = 1026
+and sampleDatetime between '2022-08-02' and '2022-08-03'
+order by SampleDateTime desc
+
+Select * from Field
+where ReportingPointId = 1026
+order by ColumnName
+
+
+--select * from ReportingPoint
+--where ItemFullName like '%Metas%'
+--order by ItemFullName
+
+
+-----------------
+
+
+	Changes CMD
+
+v6.5
+	
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Reagentes.Cal.Consumo.Fields.Consumo Dosado Concentrado
+IIF(ISNULL([Densidade],0)<=0,NULL,((3.35/(3.35–1))*(([Densidade]–1)/[Densidade]))*(ISNULL([FIQ0417_102_VAL_TOT],0)*[Densidade]))
+IIF(ISNULL([Densidade],0)<=0,NULL,((1.426)*([Densidade]-1)/[Densidade])*(ISNULL([FIQ0417_102_VAL_TOT],0)*[Densidade]))
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Reagentes.Cal.Consumo.Fields.Consumo Dosado Rejeito
+IIF(ISNULL([Densidade],0)<=0,NULL,((3.35/(3.35–1))*(([Densidade]–1)/[Densidade]))*(ISNULL([FIQ0417_105_VAL_TOT],0)*[Densidade]))
+IIF(ISNULL([Densidade],0)<=0,NULL,((1.426)*([Densidade]-1)/[Densidade])*(ISNULL([FIQ0417_105_VAL_TOT],0)*[Densidade]))
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Reagentes.Cal.Consumo.Fields.Consumo Dosado Mineroduto
+IIF(ISNULL([Densidade],0)<=0,NULL,((3.35/(3.35–1))*(([Densidade]–1)/[Densidade]))*((ISNULL([FIQ0417_103_VAL_TOT],0)+(ISNULL([FIQ0417_104_VAL_TOT],0))*[Densidade]))
+IIF(ISNULL([Densidade],0)<=0,NULL,((1.426)*([Densidade]-1)/[Densidade])*((ISNULL([FIQ0417_103_VAL_TOT],0)+ISNULL([FIQ0417_104_VAL_TOT],0))*[Densidade]))
+
+>>> System Configuration.Periods.Turno2
+Alterar os nomes cadastrados na propriedade "RepeatingPeriods".
+
+>>> Anglo American.Minas-Rio.Beneficiamento
+Incluir um EquimentID para o workcenter: "BeneficiamentoEquipmentID".
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Espessamento.Concentrado.Qualidade.Fields.AI2O3 Contido
+Colocar a propriedade Filterable como "True".
+
+>>> Colocar a propriedade Filterable como "True" para os seguintes campos:
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Rejeito.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Rejeito.Fields.Fe Contido
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Rejeito.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Rejeito.Fields.Fe Contido
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Alimentação.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Alimentação.Fields.Fe Contido
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Alimentação.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Alimentação.Fields.Fe Contido
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Concentrado.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 1.Concentrado.Fields.Fe Contido
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Concentrado.Fields.Fe
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Flotação.Linha 2.Concentrado.Fields.Fe Contido
+> Anglo American.Minas-Rio.Mina.Desmonte.Plano de Fogo.Cabeçalho.Cabeçalho.Fields.Banco
+> Anglo American.Minas-Rio.Mina.Desmonte.Plano de Fogo.Cabeçalho.Cabeçalho.Fields.Desmonte Num
+> Anglo American.Minas-Rio.Mina.Desmonte.Plano de Fogo.Furos.Furos.Fields.N Furo
+> Anglo American.Minas-Rio.Mina.Indicadores.Métricas Movimentação.Dia.Fields.Periodicidade
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Britagem.Britagem Primária.Linha 1.Paradas.Business Rules.Nivel Alto
+EvaluationExpression: (Cause = 0 and Effect = 0)
+Explanation: Nível Alto
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Concentração Magnética.Produção.Fields.Alimentação Linha 1 (tms)
+EvaluationExpression: Alimentação Linha 1
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Concentração Magnética.Produção.Fields.Alimentação Linha 2 (tms)
+EvaluationExpression: Alimentação Linha 2
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Concentração Magnética.Produção.Fields.Alimentação Total (tms)
+EvaluationExpression: Alimentação Total
+
+>>> System Configuration.Fonte de Dados.DMM.KPI Frotas.Escavacao Ano_old
+FieldMappings: Remover AVERAGE_RATE / EFFECTIVE_USE_OF_AVALIABILITY to Uso Efetivo da Disponibilidade / EFFECTIVE_UTILIZATION to Utilização Efetiva / USE_OF_AVALIABILITY to Uso da Disponibilidade / UTILIZATION to Utilização Física
+
+>>> System Configuration.Fonte de Dados.DMM.KPI Frotas.Perfuração Ano
+FieldMappings: Remover EFFECTIVE_USE_OF_AVALIABILITY to Uso Efetivo da Disponibilidade / EFFECTIVE_UTILIZATION to Utilização Efetiva / USE_OF_AVALIABILITY to Uso da Disponibilidade / UTILIZATION to Utilização Física
+
+>>> Associar campos corretos nos rpts:
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Espessamento.Horímetros Incrementais.Fields.0417-BA-13
+> Anglo American.Minas-Rio.Beneficiamento.Usina.Espessamento.Horímetros Incrementais.Fields.0417-BA-13R
+> Anglo American.Minas-Rio.Mina.Carga.Mês.Fields.Produtividade Horaria Global Reconciliada
+> Anglo American.Minas-Rio.Beneficiamento.Prensa de Rolos.Linha 1.0311-AL-01.Paradas.Business Rules.Record Incomplete
+> Anglo American.Minas-Rio.Mina.Carga.Mês.Fields.Produtividade Horaria Reconciliada
+> Anglo American.Minas-Rio.Beneficiamento.Prensa de Rolos.Linha 1.0311-AL-01.Paradas.Business Rules.Microparada
+> Anglo American.Minas-Rio.Beneficiamento.Prensa de Rolos.Linha 2.0311-AL-02.Paradas.Business Rules.Microparada
+
+>>> System Configuration.Fonte de Dados.Calculado.Lista_Pendencias
+FilterFields: N° da Ação
+
+>>> System Configuration.Fonte de Dados.PIMS.Beneficiamento.Concentracao_Magnetica_Horimetros.E0420PN01_HOR
+OpcItemID: \\MTAFBRCMD645\E0420PN01_HOR
+
+>>> System Configuration.Fonte de Dados.PIMS.Beneficiamento.Usina_Processo.DIQ0417_904
+OpcItemID: \\MTAFBRCMD645\DIQ0417_904
+
+>>> Material Movements.SaidaPilha
+DestinationMaterialExpressions: Null
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Cadastro de Metas.Fields.Indicador
+Remover a lista do allowedValuesTypes: OleDB
+
+v7.3
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Britagem.Britagem Primária.Paradas.Fields.Effect
+HistoricalFieldExpression: Project.[Anglo American].[Minas-Rio].Beneficiamento.Britagem.[Britagem Primária].DecisionMatrix.Output1.Samples[time]
+
+>>> References
+Adicionar referência na raiz do projeto: Citect.Ampla.Models
+
+Não funciona
+
+>>> Anglo American.Minas-Rio.Beneficiamento.Usina.Métricas Turma
+>>> Anglo American.Minas-Rio.Beneficiamento.Britagem.Metricas Turma
